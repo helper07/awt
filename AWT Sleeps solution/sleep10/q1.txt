@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Transition Effects Example</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      text-align: center;
+      margin: 50px;
+    }
+
+    button {
+      padding: 15px 30px;
+      font-size: 16px;
+      background-color: #3498db;
+      color: #fff;
+      border: none;
+      cursor: pointer;
+      transition: background-color 0.3s ease, font-size 0.5s ease-in-out;
+    }
+
+    button:hover {
+      background-color: #2ecc71;
+      font-size: 20px;
+      transition-delay: 0.2s; /* Adds a delay before starting the transition */
+    }
+  </style>
+</head>
+<body>
+
+  <h2>Transition Effects Example</h2>
+
+  <button>Hover me</button>
+
+</body>
+</html>

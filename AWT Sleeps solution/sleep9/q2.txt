@@ -1,0 +1,51 @@
+-- Create Customer table
+CREATE TABLE Customer (
+    customer_id INT PRIMARY KEY,
+    customer_name VARCHAR(255) NOT NULL,
+    address VARCHAR(255) NOT NULL,
+    city VARCHAR(255) NOT NULL
+);
+
+-- Create Loan table
+CREATE TABLE Loan (
+    loan_id INT PRIMARY KEY,
+    customer_id INT,
+    loan_type VARCHAR(255) NOT NULL,
+    loan_amount DECIMAL(10, 2) NOT NULL,
+    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id)
+);
+
+-- Insert sample data into Customer table
+INSERT INTO Customer (customer_id, customer_name, address, city) VALUES
+    (1, 'Mr. Patil', '123 Main St', 'Pimpri'),
+    (2, 'Mrs. Deshmukh', '456 Oak St', 'Mumbai'),
+    (3, 'Ms. Sharma', '789 Maple St', 'Pimpri'),
+    -- Add more customers as needed;
+
+-- Insert sample data into Loan table
+INSERT INTO Loan (loan_id, customer_id, loan_type, loan_amount) VALUES
+    (101, 1, 'Home Loan', 150000),
+    (102, 2, 'Car Loan', 50000),
+    (103, 3, 'Education Loan', 80000),
+    -- Add more loans as needed;
+4. Answer the following Queries. 
+a. List all customers whose name starts with 'D' character [3] 
+SELECT *
+FROM Customer
+WHERE customer_name LIKE 'D%';
+b.List the names of customer in descending order who has taken a loan from Pimpri city. [3] 
+SELECT c.customer_name
+FROM Customer c
+JOIN Loan l ON c.customer_id = l.customer_id
+WHERE c.city = 'Pimpri'
+ORDER BY c.customer_name DESC;
+c.Display customer details having maximum loan amount. [4]
+SELECT c.*, l.loan_amount
+FROM Customer c
+JOIN Loan l ON c.customer_id = l.customer_id
+WHERE l.loan_amount = (SELECT MAX(loan_amount) FROM Loan);
+ d.Update the address of customer whose name is “Mr. Patil” and loan_amt is greater than 100000.
+UPDATE Customer
+SET address = 'New Address'
+WHERE customer_name = 'Mr. Patil'
+  AND (SELECT loan_amount FROM Loan WHERE customer_id = (SELECT customer_id FROM Customer WHERE customer_name = 'Mr. Patil')) > 100000;

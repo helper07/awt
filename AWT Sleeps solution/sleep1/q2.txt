@@ -1,0 +1,53 @@
+	 -- Create Owner table
+CREATE TABLE Owner (
+    owner_id INT PRIMARY KEY,
+    owner_name VARCHAR(255) NOT NULL
+);
+
+-- Create Property table
+CREATE TABLE Property (
+    property_id INT PRIMARY KEY,
+    property_name VARCHAR(255) NOT NULL,
+    area VARCHAR(100) NOT NULL,
+    rate INT NOT NULL,
+    owner_id INT,
+    FOREIGN KEY (owner_id) REFERENCES Owner(owner_id)
+);
+
+-- Insert sample data into Owner table
+INSERT INTO Owner (owner_id, owner_name) VALUES
+    (1, 'Mr. Patil'),
+    (2, 'Mrs. Sharma'),
+    (3, 'Mr. Singh'),
+    (4, 'Ms. Gupta'),
+    (5, 'Dr. Kumar');
+
+-- Insert sample data into Property table
+INSERT INTO Property (property_id, property_name, area, rate, owner_id) VALUES
+    (101, 'Property1', 'Mumbai', 120000, 1),
+    (102, 'Property2', 'Nashik', 90000, 1),
+    (103, 'Property3', 'Pune', 150000, 2),
+    (104, 'Property4', 'Nashik', 80000, 3),
+    (105, 'Property5', 'Mumbai', 95000, 4); 
+
+ Answer the following Queries 
+Display area wise property details. [3]
+SELECT area, property_name, rate, owner_name
+FROM Property
+JOIN Owner ON Property.owner_id = Owner.owner_id; 	 
+Display property owned by 'Mr.Patil' having minimum rate [3]
+SELECT property_name, area, rate
+FROM Property
+JOIN Owner ON Property.owner_id = Owner.owner_id
+WHERE owner_name = 'Mr. Patil'
+ORDER BY rate ASC
+LIMIT 1; 	
+Give the details of owner whose property is at “Nashik”. [4]
+SELECT owner_name, property_name, area, rate
+FROM Property
+JOIN Owner ON Property.owner_id = Owner.owner_id
+WHERE area = 'Nashik';
+Display area of property whose rate is less than 100000. [4]
+SELECT area, property_name, rate
+FROM Property
+WHERE rate < 100000;

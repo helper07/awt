@@ -1,0 +1,64 @@
+-- Create Customer table
+CREATE TABLE Customer (
+    customer_id INT PRIMARY KEY,
+    customer_name VARCHAR(255) NOT NULL
+);
+
+-- Create Policy table
+CREATE TABLE Policy (
+    policy_id INT PRIMARY KEY,
+    policy_type VARCHAR(255) NOT NULL,
+    premium_amount DECIMAL(10, 2) NOT NULL
+);
+
+-- Create CustomerPolicy table (to represent many-to-many relationship)
+CREATE TABLE CustomerPolicy (
+    customer_id INT,
+    policy_id INT,
+    PRIMARY KEY (customer_id, policy_id),
+    FOREIGN KEY (customer_id) REFERENCES Customer(customer_id),
+    FOREIGN KEY (policy_id) REFERENCES Policy(policy_id)
+);
+
+-- Insert sample data into Customer table
+INSERT INTO Customer (customer_id, customer_name) VALUES
+    (1, 'John Doe'),
+    (2, 'Jane Smith'),
+    (3, 'Bob Johnson'),
+    (4, 'Alice Brown'),
+    (5, 'Charlie Green');
+
+-- Insert sample data into Policy table
+INSERT INTO Policy (policy_id, policy_type, premium_amount) VALUES
+    (101, 'Komal Jeevan', 5000),
+    (102, 'Term Insurance', 3000),
+    (103, 'Monthly', 100),
+    (104, 'Quarterly', 250),
+    (105, 'Half Yearly', 500);
+
+-- Insert sample data into CustomerPolicy table
+INSERT INTO CustomerPolicy (customer_id, policy_id) VALUES
+    (1, 101),
+    (2, 101),
+    (3, 102),
+    (4, 103),
+    (5, 105);
+4. Answer the following Queries.
+ a. List the details of customers who have taken “Komal Jeevan” Policy [3]
+SELECT c.customer_name, p.policy_type, p.premium_amount
+FROM Customer c
+JOIN CustomerPolicy cp ON c.customer_id = cp.customer_id
+JOIN Policy p ON cp.policy_id = p.policy_id
+WHERE p.policy_type = 'Komal Jeevan';
+ b. Display average premium amount [3]
+SELECT AVG(premium_amount) AS average_premium
+FROM Policy;
+ c. Increase the premium amount by 5% for policy type=”Monthly” [4]
+UPDATE Policy
+SET premium_amount = premium_amount * 1.05
+WHERE policy_type = 'Monthly';
+ d. Count no. of customers who have taken policy type “half yearly”
+SELECT COUNT(cp.customer_id) AS num_customers
+FROM CustomerPolicy cp
+JOIN Policy p ON cp.policy_id = p.policy_id
+WHERE p.policy_type = 'Half Yearly';
